@@ -1,2 +1,2 @@
 # php-framework
- A simple framework written for PHP
+ A simple framework or template written for PHP
