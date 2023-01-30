@@ -5,15 +5,34 @@ function register_action( $callback ) {
     call_user_func( $callback );
 }
 
-$result = array(
-    'code' => '101',
-    'label' => 'code.denied',
-    'msg' => 'Permission Denied'
+$results = array(
+    'unauthorized' => array(
+        'code' => '401',
+        'label' => 'unauthorized',
+        'msg' => 'Permission Denied'
+    ),
+    'authorized' => array(
+        'code' => '200',
+        'label' => 'authorized',
+        'msg' => 'User Authorized'
+    ),
+    'error' => array(
+        'code' => '500',
+        'label' => 'error',
+        'msg' => 'Something Went Wrong'
+    )
 );
 
 function set_response( $result = array() ) {
+    check_redirect();
     echo json_encode( $result );
     exit();
+}
+
+function check_redirect() {
+    if( isset( $_REQUEST[ "redirect" ] ) ) {
+        header( "Location: $_REQUEST[redirect]" );
+    }
 }
 
 // Put your actions here. You can also put ajax request, but remember to use exit(); after the current action
@@ -31,14 +50,10 @@ function authenticate() {
             $_SESSION[ "something" ] = "";
             $_SESSION[ "expiration" ] = "";
 
-            $result[ 'code' ] = '200';
-            $result[ 'label' ] = 'code.ok';
-            $result[ 'msg' ] = 'Logged in successfully';
-
-            set_response( $result );
+            set_response( $results[ 'authorized' ] );
         } else {
             // Sending default response
-            set_response( $result );
+            set_response( $results[ 'unauthorized' ] );
         }
     }
 }

@@ -11,10 +11,21 @@ class DatabaseHelper {
         }
     }
 
+    
     private function db() {
         return $mysqli;
     }
 
+    /**
+     * Summary
+     * 
+     * Description
+     * 
+     * @param string $table Description
+     * @param array $values Description
+     * @param boolean $debug Description
+     * @return object Description
+     */
     private function insert( $table, $values = array(), $debug = false ) {
         $keys = implode( ", ", array_keys( $values ) );
         $vals = implode( "', '", array_values( $values ) );
